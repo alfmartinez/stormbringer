@@ -7,14 +7,13 @@ body {
 .note, .large-note {
   position: absolute;
   font-size: 12px;
-  display:table-row;
   height: 64px;
+  padding: 4px;
+  border: 1px black solid;
 }
 
 .note .label, .large-note .label {
   padding: 4px;
-  display:table-cell;
-  vertical-align:middle
 }
 
 .note {

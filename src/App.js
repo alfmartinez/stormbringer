@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import './App.css';
+import {Note} from "./Note";
 
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <div className="event note" style={{top: "132px", left: "164px"}}>
-                    <span className="label">Event Displayed</span>
-                </div>
-                <div className="aggregate large-note" style={{top: "100px", left: "100px"}}>
-                    <span className="label">Graphics Renderer</span>
-                </div>
+                <Note title="Event Displayed" type="event" x={132} y={164}/>
+                <Note title="Graphics Renderer" type="aggregate" x={100} y={100}/>
             </div>
         );
     }
