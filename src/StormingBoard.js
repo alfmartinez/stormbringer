@@ -5,7 +5,7 @@ class StormingBoard extends Component {
     render() {
         const {elements} = this.props;
         return (
-            <div className="App">
+            <div className="StormingBoard">
                 { elements.map((note,idx) => <Note key={idx} {...note} />) }
             </div>
         );

@@ -13,7 +13,9 @@ body {
 }
 
 .note .label, .large-note .label {
-  padding: 4px;
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 .note {
