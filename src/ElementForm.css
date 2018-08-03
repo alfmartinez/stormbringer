@@ -1,8 +1,10 @@
 .ElementForm {
     margin: 16px;
+    padding: 32px;
     border: 1px black solid;
     background-color: lightgray;
-    width: 50%;
-    left: 25%;
-    position: absolute;
+}
+
+.ElementForm input {
+    border: 1px grey solid;
 }
