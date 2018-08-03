@@ -44,8 +44,8 @@ export class ElementForm extends Component {
             const id = uuid();
             const values = this.state.data;
             const data = {
-                id,
-                ...values
+                ...values,
+                id
             };
             PubSub.publish('Element.Create', data);
         }
