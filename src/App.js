@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import StormingBoard from "./StormingBoard";
+import React, {Component} from "react";
 import './App.css';
-import {Note} from "./Note";
 
-class App extends Component {
+export class App extends Component {
     render() {
-        const state = [{
+
+        const elements = [{
             id: 'evt_001',
             title: "Event Displayed",
             type: "event",
@@ -15,12 +16,9 @@ class App extends Component {
             type: "aggregate",
             position: {x:100, y:100}
         }];
+
         return (
-            <div className="App">
-                { state.map((note,idx) => <Note key={idx} {...note} />) }
-            </div>
+            <StormingBoard elements={elements}/>
         );
     }
-}
-
-export default App;
+};
