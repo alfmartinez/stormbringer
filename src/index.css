@@ -3,3 +3,51 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.note, .large-note {
+  font-size: 12px;
+  display:table-row;
+  height: 64px;
+}
+
+.note .label, .large-note .label {
+  padding: 4px;
+  display:table-cell;
+  vertical-align:middle
+}
+
+.note {
+  width: 64px;
+}
+
+.large-note {
+  width: 96px;
+}
+
+.event {
+  background-color: orange;
+}
+
+.command {
+  background-color: lightblue;
+}
+
+.aggregate {
+  background-color: yellow;
+}
+
+.issue {
+  background-color: red;
+}
+
+.persona {
+  background-color: lightyellow;
+}
+
+.view {
+  background-color: green;
+}
+
+.context .label {
+  background-color: hotpink;
+}
