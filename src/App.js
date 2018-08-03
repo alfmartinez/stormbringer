@@ -4,10 +4,20 @@ import {Note} from "./Note";
 
 class App extends Component {
     render() {
+        const state = [{
+            id: 'evt_001',
+            title: "Event Displayed",
+            type: "event",
+            position: {x:132, y:164}
+        }, {
+            id: 'agg_001',
+            title: "Graphics Renderer",
+            type: "aggregate",
+            position: {x:100, y:100}
+        }];
         return (
             <div className="App">
-                <Note title="Event Displayed" type="event" x={132} y={164}/>
-                <Note title="Graphics Renderer" type="aggregate" x={100} y={100}/>
+                { state.map((note,idx) => <Note key={idx} {...note} />) }
             </div>
         );
     }
