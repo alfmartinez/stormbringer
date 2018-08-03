@@ -21,9 +21,9 @@ export class App extends Component {
     }
 
     subscriber(msg, data) {
-        console.log(msg, data);
         switch(msg) {
             case "Element.Replace":
+                this.updateElements(data);
                 break;
             case "Element.Create":
                 this.setState({
@@ -32,14 +32,47 @@ export class App extends Component {
                         data
                     ]});
                 break;
+            case "Element.Move":
+                this.updateElementPosition(data);
+                break;
             default:
                 console.log(msg, data);
         }
     }
 
+    updateElementPosition(data) {
+        const elements = this.state.elements.map(element => {
+            if (element.id === data.id) {
+                return {
+                    ...element,
+                    position: data.position
+                };
+            } else {
+                return element;
+            }
+        });
+        this.setState({elements});
+    }
+
+    updateElements(data) {
+        const elements = this.state.elements.map(element => {
+            if (element.id === data.id) {
+                return data;
+            } else {
+                return element;
+            }
+        });
+        this.setState({elements});
+    }
+
     handleNew() {
         PubSub.publish('Form.New');
     }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log('nextState', nextState);
+    }
+
 
     render() {
         return (
