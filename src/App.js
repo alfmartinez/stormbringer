@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {elements} from "./data/elements";
 import './App.css';
 import {ElementForm} from "./components/ElementForm";
+import {DownloadLink} from "./components/DownloadLink";
 import * as PubSub from "pubsub-js";
 
 export class App extends Component {
@@ -70,7 +71,7 @@ export class App extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        console.log('nextState', nextState);
+        PubSub.publish('Storm.Save', nextState.elements);
     }
 
 
@@ -81,9 +82,10 @@ export class App extends Component {
                     <StormingBoard elements={this.state.elements}/>
                 </div>
                 <div className="tools">
-                    <ElementForm show={false}/>
                     <button onClick={this.handleNew}>New Element</button>
+                    <DownloadLink />
                 </div>
+                <ElementForm show={false}/>
             </div>
         );
     }

@@ -1,0 +1,13 @@
+a.download-button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+    font-size: 11px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}

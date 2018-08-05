@@ -82,13 +82,26 @@ export class ElementForm extends Component {
     render() {
         return this.state.show ? (
             <form className="ElementForm" onSubmit={this.handleSubmit.bind(this)}>
-                Title:
+                Title: &nbsp;
                 <input id="form-element-title"
                        name="title"
                        type="text"
                        value={this.state.data.title}
                        onChange={this.handleInputChange.bind(this)}
                 /><br />
+                Type: &nbsp;
+                <select id="form-element-type"
+                       name="type"
+                       value={this.state.data.type}
+                       onChange={this.handleInputChange.bind(this)}
+                >
+                    <option value="event">Event</option>
+                    <option value="aggregate">Aggregate</option>
+                    <option value="command">Command</option>
+                    <option value="issue">Issue</option>
+                    <option value="persona">Persona</option>
+                    <option value="view">View</option>
+                </select><br />
                 <input type="submit" value="Submit" />
             </form>
         ): '';

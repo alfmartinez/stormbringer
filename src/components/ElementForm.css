@@ -1,10 +1,14 @@
 .ElementForm {
+    position: fixed;
+    bottom: 0px;
     margin: 16px;
     padding: 32px;
     border: 1px black solid;
     background-color: lightgray;
+    text-align: left;
 }
 
-.ElementForm input {
+.ElementForm input, .ElementForm select {
     border: 1px grey solid;
+    float: right;
 }
