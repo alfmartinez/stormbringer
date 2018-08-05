@@ -1,8 +1,8 @@
-import StormingBoard from "./StormingBoard";
+import StormingBoard from "./components/StormingBoard";
 import React, {Component} from "react";
-import {elements} from "./elements";
+import {elements} from "./data/elements";
 import './App.css';
-import {ElementForm} from "./ElementForm";
+import {ElementForm} from "./components/ElementForm";
 import * as PubSub from "pubsub-js";
 
 export class App extends Component {
