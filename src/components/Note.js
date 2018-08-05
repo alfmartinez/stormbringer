@@ -9,11 +9,18 @@ export class Note extends React.Component {
         PubSub.publishSync('Storm.Form.Load', this.props);
     }
 
-    handleStopDrag(event) {
-        const {x,y} = event;
-        const position = {x,y};
+    handleStopDrag(event, data) {
+        const {x,y} = data;
+        const {position} = this.props;
+        if (x!==position.x || y!==position.y) {
+            this.updatePosition(x, y);
+        }
+    }
+
+    updatePosition(x, y) {
+        const position = {x, y};
         const id = this.props.id;
-        PubSub.publishSync('Storm.Element.Move', {position,id});
+        PubSub.publishSync('Storm.Element.Move', {position, id});
     }
 
     render() {

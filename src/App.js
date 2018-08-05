@@ -1,17 +1,20 @@
 import StormingBoard from "./components/StormingBoard";
 import React, {Component} from "react";
-import {elements} from "./data/elements";
 import './App.css';
 import {ElementForm} from "./components/ElementForm";
 import {DownloadLink} from "./components/DownloadLink";
 import * as PubSub from "pubsub-js";
 import {DataLoader} from "./components/DataLoader";
 
+const initialState = {
+    elements: []
+};
+
 export class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {elements: elements};
+        this.state = initialState;
     }
 
     componentWillMount() {
@@ -23,7 +26,6 @@ export class App extends Component {
     }
 
     subscriber(msg, data) {
-        console.log(msg, data);
         switch(msg) {
             case "Storm.Element.Replace":
                 this.updateElements(data);
@@ -39,8 +41,9 @@ export class App extends Component {
                 this.updateElementPosition(data);
                 break;
             case "Storm.Load":
-                console.log('Loading');
-                this.setState({elements: data});
+                this.setState(initialState, () => {
+                    this.setState({elements: data});
+                });
                 break;
             default:
                 console.log(msg, data);
@@ -90,7 +93,7 @@ export class App extends Component {
                 <div className="tools">
                     <DataLoader/>
                     <button onClick={this.handleNew}>New Element</button>
-                    <DownloadLink />
+                    <DownloadLink data={this.state.elements}/>
                 </div>
                 <ElementForm show={false}/>
             </div>
