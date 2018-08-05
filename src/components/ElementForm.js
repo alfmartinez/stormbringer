@@ -39,7 +39,7 @@ export class ElementForm extends Component {
         event.stopPropagation();
 
         if (this.state.data.id) {
-            PubSub.publish('Element.Replace', this.state.data);
+            PubSub.publish('Storm.Element.Replace', this.state.data);
         } else {
             const id = uuid();
             const values = this.state.data;
@@ -47,27 +47,27 @@ export class ElementForm extends Component {
                 ...values,
                 id
             };
-            PubSub.publish('Element.Create', data);
+            PubSub.publish('Storm.Element.Create', data);
         }
         this.setState({show: false});
     }
 
     componentWillMount() {
-        this.observer = PubSub.subscribe('Form', this.subscriber.bind(this));
+        this.observer = PubSub.subscribe('Storm.Form', this.subscriber.bind(this));
     }
 
     subscriber(msg, data) {
         switch(msg) {
-            case "Form.Show":
+            case "Storm.Form.Show":
                 this.setState({show: true});
                 break;
-            case "Form.Hide":
+            case "Storm.Form.Hide":
                 this.setState({show: false});
                 break;
-            case "Form.Load":
+            case "Storm.Form.Load":
                 this.setState({data, show: true});
                 break;
-            case "Form.New":
+            case "Storm.Form.New":
                 this.setState({data: initialState, show: true});
                 break;
             default:

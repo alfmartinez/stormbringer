@@ -63,7 +63,11 @@ describe('Note events', () => {
     const wrapper = shallow(<Note position={position} id={id} title={title} type="event"/>);
 
     beforeEach(() => {
-        token = PubSub.subscribe('Form.Load', (msg, data) => {
+        published = false;
+        actualData = null;
+        publishedMessage = null;
+
+        token = PubSub.subscribe('Storm', (msg, data) => {
             published = true;
             publishedMessage = msg;
             actualData = data;
@@ -78,7 +82,16 @@ describe('Note events', () => {
         wrapper.find('span').simulate('doubleclick');
         expect(published).toBe(true);
         expect(actualData).toEqual({id,position,title,type});
+        expect(publishedMessage).toBe('Storm.Form.Load');
         PubSub.unsubscribe(token);
     });
 
+    it('publishes move message on drag stop',() => {
+        const newPosition = {x: 102,y: 43};
+        wrapper.simulate('stop',newPosition);
+        expect(published).toBe(true);
+        expect(actualData).toEqual({id,position: newPosition});
+        expect(publishedMessage).toBe('Storm.Element.Move');
+        PubSub.unsubscribe(token);
+    });
 });

@@ -6,14 +6,14 @@ import './Note.css';
 export class Note extends React.Component {
 
     handleClick() {
-        PubSub.publishSync('Form.Load', this.props);
+        PubSub.publishSync('Storm.Form.Load', this.props);
     }
 
     handleStopDrag(event) {
         const {x,y} = event;
         const position = {x,y};
         const id = this.props.id;
-        PubSub.publish('Element.Move', {position,id});
+        PubSub.publishSync('Storm.Element.Move', {position,id});
     }
 
     render() {

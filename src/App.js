@@ -13,7 +13,7 @@ export class App extends Component {
     }
 
     componentWillMount() {
-        this.observer = PubSub.subscribe('Element', this.subscriber.bind(this));
+        this.observer = PubSub.subscribe('Storm.Element', this.subscriber.bind(this));
     }
 
     componentWillUnmount() {
@@ -22,17 +22,17 @@ export class App extends Component {
 
     subscriber(msg, data) {
         switch(msg) {
-            case "Element.Replace":
+            case "Storm.Element.Replace":
                 this.updateElements(data);
                 break;
-            case "Element.Create":
+            case "Storm.Element.Create":
                 this.setState({
                     elements: [
                         ...(this.state.elements),
                         data
                     ]});
                 break;
-            case "Element.Move":
+            case "Storm.Element.Move":
                 this.updateElementPosition(data);
                 break;
             default:
@@ -66,7 +66,7 @@ export class App extends Component {
     }
 
     handleNew() {
-        PubSub.publish('Form.New');
+        PubSub.publish('Storm.Form.New');
     }
 
     componentWillUpdate(nextProps, nextState) {
