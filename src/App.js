@@ -5,6 +5,7 @@ import './App.css';
 import {ElementForm} from "./components/ElementForm";
 import {DownloadLink} from "./components/DownloadLink";
 import * as PubSub from "pubsub-js";
+import {DataLoader} from "./components/DataLoader";
 
 export class App extends Component {
 
@@ -14,7 +15,7 @@ export class App extends Component {
     }
 
     componentWillMount() {
-        this.observer = PubSub.subscribe('Storm.Element', this.subscriber.bind(this));
+        this.observer = PubSub.subscribe('Storm', this.subscriber.bind(this));
     }
 
     componentWillUnmount() {
@@ -22,6 +23,7 @@ export class App extends Component {
     }
 
     subscriber(msg, data) {
+        console.log(msg, data);
         switch(msg) {
             case "Storm.Element.Replace":
                 this.updateElements(data);
@@ -35,6 +37,10 @@ export class App extends Component {
                 break;
             case "Storm.Element.Move":
                 this.updateElementPosition(data);
+                break;
+            case "Storm.Load":
+                console.log('Loading');
+                this.setState({elements: data});
                 break;
             default:
                 console.log(msg, data);
@@ -82,6 +88,7 @@ export class App extends Component {
                     <StormingBoard elements={this.state.elements}/>
                 </div>
                 <div className="tools">
+                    <DataLoader/>
                     <button onClick={this.handleNew}>New Element</button>
                     <DownloadLink />
                 </div>

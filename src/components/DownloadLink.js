@@ -18,13 +18,14 @@ export class DownloadLink extends Component {
         PubSub.unsubscribe(this.observer);
     }
 
-    subscriber(msg, data) {
+    subscriber(msg, data = []) {
         this.setState(data);
     }
 
     render(){
         return (
             <a className="download-button"
+               download="eventStorming.json"
                 href={
                 "data:application/octet-stream;" +
                 "charset=utf-16le;base64,"
