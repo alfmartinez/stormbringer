@@ -3,37 +3,82 @@ import ReactDOM from 'react-dom';
 import {shallow} from 'enzyme';
 import {Note} from "./Note";
 import Draggable from "react-draggable";
+import * as PubSub from "pubsub-js";
 
-it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<Note/>, div);
-    ReactDOM.unmountComponentAtNode(div);
+describe('Note', () => {
+
+    it('renders without crashing', () => {
+        const div = document.createElement('div');
+        ReactDOM.render(<Note/>, div);
+        ReactDOM.unmountComponentAtNode(div);
+    });
+
+    it('renders as a draggable', () => {
+        const wrapper = shallow(<Note/>);
+        expect(wrapper.name()).toBe('Draggable');
+    });
+
+    it('renders at expected location', () => {
+        const position = {x: 34, y: 2};
+        const wrapper = shallow(<Note position={position}/>);
+        expect(wrapper.find(Draggable).prop('defaultPosition')).toBe(position);
+    });
+
+    it('renders expected note', () => {
+        const position = {x: 34, y: 2};
+        const id = "test_xyz";
+        const title = "My Title";
+        const wrapper = shallow(<Note position={position} id={id} title={title} type="event"/>);
+
+        const noteDiv = wrapper.find('div');
+        expect(noteDiv.prop('id')).toBe(id);
+        expect(noteDiv.prop('title')).toBe(title);
+        expect(noteDiv.prop('className')).toBe('event note');
+
+        const labelSpan = noteDiv.find('span');
+        expect(labelSpan.prop('className')).toBe('label');
+        expect(labelSpan.contains(title)).toBe(true);
+
+    });
+
+    it('renders expected large note', () => {
+        const wrapper = shallow(<Note type="aggregate"/>);
+
+        const noteDiv = wrapper.find('div');
+        expect(noteDiv.prop('className')).toBe('aggregate large-note');
+    });
+
 });
 
-it('renders as a draggable', () => {
-    const wrapper = shallow(<Note />);
-    expect(wrapper.name()).toBe('Draggable');
-});
+describe('Note events', () => {
+    let published;
+    let actualData;
+    let publishedMessage;
+    let token;
 
-it('renders at expected location', () => {
-    const position = {x: 34, y: 2};
-    const wrapper = shallow(<Note position={position}/>);
-    expect(wrapper.find(Draggable).prop('defaultPosition')).toBe(position);
-});
-
-it('renders expected note', () => {
     const position = {x: 34, y: 2};
     const id = "test_xyz";
     const title = "My Title";
+    const type = "event";
     const wrapper = shallow(<Note position={position} id={id} title={title} type="event"/>);
 
-    const noteDiv = wrapper.find('div');
-    expect(noteDiv.prop('id')).toBe(id);
-    expect(noteDiv.prop('title')).toBe(title);
-    expect(noteDiv.prop('className')).toBe('event note');
+    beforeEach(() => {
+        token = PubSub.subscribe('Form.Load', (msg, data) => {
+            published = true;
+            publishedMessage = msg;
+            actualData = data;
+        });
+    });
 
-    const labelSpan = noteDiv.find('span');
-    expect(labelSpan.prop('className')).toBe('label');
-    expect(labelSpan.contains(title)).toBe(true);
+    afterEach(() => {
+        PubSub.unsubscribe(token);
+    });
+
+    it('publishes edit message on double click',() => {
+        wrapper.find('span').simulate('doubleclick');
+        expect(published).toBe(true);
+        expect(actualData).toEqual({id,position,title,type});
+        PubSub.unsubscribe(token);
+    });
 
 });

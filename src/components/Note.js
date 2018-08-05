@@ -6,7 +6,7 @@ import './Note.css';
 export class Note extends React.Component {
 
     handleClick() {
-        PubSub.publish('Form.Load', this.props);
+        PubSub.publishSync('Form.Load', this.props);
     }
 
     handleStopDrag(event) {
