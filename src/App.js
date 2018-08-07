@@ -2,9 +2,8 @@ import StormingBoard from "./components/StormingBoard";
 import React, {Component} from "react";
 import './App.css';
 import {ElementForm} from "./components/ElementForm";
-import {DownloadLink} from "./components/DownloadLink";
 import * as PubSub from "pubsub-js";
-import {DataLoader} from "./components/DataLoader";
+import {Toolbar} from "./components/Toolbar";
 
 const initialState = {
     elements: [],
@@ -87,9 +86,7 @@ export class App extends Component {
         });
     }
 
-    handleNew() {
-        PubSub.publish('Storm.Form.New');
-    }
+
 
     componentWillUpdate(nextProps, nextState) {
         PubSub.publish('Storm.Save', nextState.elements);
@@ -99,15 +96,13 @@ export class App extends Component {
     render() {
         return (
             <div className="App">
-                <div className="">
+                <div className="Main">
                     <StormingBoard elements={this.state.elements}/>
                 </div>
-                <div className="tools">
-                    <DataLoader/>
-                    <button onClick={this.handleNew}>New Element</button>
-                    <DownloadLink data={this.state.elements}/>
-                </div>
-                {this.state.edit ? <ElementForm /> : '' }
+                <Toolbar handleNew={function (){
+        PubSub.publish('Storm.Form.New');
+    }} elements={this.state.elements}/>
+                {this.state.edit ? <ElementForm/> : ''}
             </div>
         );
     }
