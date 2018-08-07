@@ -83,15 +83,19 @@ describe('Note events', () => {
         expect(published).toBe(true);
         expect(actualData).toEqual({id,position,title,type});
         expect(publishedMessage).toBe('Storm.Form.Load');
-        PubSub.unsubscribe(token);
     });
 
     it('publishes move message on drag stop',() => {
         const newPosition = {x: 102,y: 43};
-        wrapper.simulate('stop',newPosition);
+        wrapper.simulate('stop',newPosition, newPosition);
         expect(published).toBe(true);
         expect(actualData).toEqual({id,position: newPosition});
         expect(publishedMessage).toBe('Storm.Element.Move');
-        PubSub.unsubscribe(token);
+    });
+
+    it('publishes move message only if position changed on drag stop',() => {
+        const newPosition = {x: 102,y: 43};
+        wrapper.simulate('stop',newPosition, position);
+        expect(published).toBe(false);
     });
 });
