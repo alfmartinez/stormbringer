@@ -7,7 +7,8 @@ import * as PubSub from "pubsub-js";
 import {DataLoader} from "./components/DataLoader";
 
 const initialState = {
-    elements: []
+    elements: [],
+    edit: false
 };
 
 export class App extends Component {
@@ -27,15 +28,15 @@ export class App extends Component {
 
     subscriber(msg, data) {
         switch(msg) {
+            case "Storm.Form.New":
+            case "Storm.Form.Show":
+                this.setState({edit: true});
+                break;
             case "Storm.Element.Replace":
                 this.updateElements(data);
                 break;
             case "Storm.Element.Create":
-                this.setState({
-                    elements: [
-                        ...(this.state.elements),
-                        data
-                    ]});
+                this.createElement(data);
                 break;
             case "Storm.Element.Move":
                 this.updateElementPosition(data);
@@ -50,29 +51,40 @@ export class App extends Component {
         }
     }
 
-    updateElementPosition(data) {
-        const elements = this.state.elements.map(element => {
-            if (element.id === data.id) {
-                return {
-                    ...element,
-                    position: data.position
-                };
-            } else {
-                return element;
-            }
+    createElement(data) {
+        this.setState({
+            elements: [
+                ...(this.state.elements),
+                data
+            ],
+            edit: false
         });
+    }
+
+    updateElementPosition(data) {
+        const elements = this.appyToElement(data, (data,element) => ({
+            ...element,
+            position: data.position
+        }));
         this.setState({elements});
     }
 
-    updateElements(data) {
-        const elements = this.state.elements.map(element => {
+    appyToElement(data, fn) {
+        return this.state.elements.map(element => {
             if (element.id === data.id) {
-                return data;
+                return fn(data,element);
             } else {
                 return element;
             }
         });
-        this.setState({elements});
+    }
+
+    updateElements(data) {
+        const elements = this.appyToElement(data, (data) => data);
+        this.setState({
+            elements,
+            edit: false
+        });
     }
 
     handleNew() {
@@ -95,7 +107,7 @@ export class App extends Component {
                     <button onClick={this.handleNew}>New Element</button>
                     <DownloadLink data={this.state.elements}/>
                 </div>
-                <ElementForm show={false}/>
+                {this.state.edit ? <ElementForm /> : '' }
             </div>
         );
     }

@@ -18,7 +18,6 @@ export class ElementForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: props.show,
             data: initialState
         }
     }
@@ -49,7 +48,6 @@ export class ElementForm extends Component {
             };
             PubSub.publish('Storm.Element.Create', data);
         }
-        this.setState({show: false});
     }
 
     componentWillMount() {
@@ -68,7 +66,7 @@ export class ElementForm extends Component {
                 this.setState({data, show: true});
                 break;
             case "Storm.Form.New":
-                this.setState({data: initialState, show: true});
+                this.setState({data: initialState});
                 break;
             default:
                 console.log(msg, data);
@@ -80,7 +78,7 @@ export class ElementForm extends Component {
     }
 
     render() {
-        return this.state.show ? (
+        return (
             <form className="ElementForm" onSubmit={this.handleSubmit.bind(this)}>
                 Title: &nbsp;
                 <input id="form-element-title"
@@ -104,6 +102,6 @@ export class ElementForm extends Component {
                 </select><br />
                 <input type="submit" value="Submit" />
             </form>
-        ): '';
+        );
     }
 }
